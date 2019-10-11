@@ -12,9 +12,9 @@ import './styles/css/responsive.css';
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import Page from "./components/Page";
-import Home from "./containers/Home";
-import Control from "./containers/Control";
-import Run from "./containers/Run";
+import Home from "./containers/home1";
+import Control from "./containers/control1";
+import Run from "./containers/run1";
 
 
 function App() {
