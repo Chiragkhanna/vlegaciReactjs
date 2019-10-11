@@ -2,9 +2,16 @@
   "name": "vlegacireactjs",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "npm": "6.4.1",
+    "node": "8.12.0"
+  },
   "dependencies": {
+    "node-sass": "^4.12.0",
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
+    "react-responsive-carousel": "^3.1.50",
+    "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0"
   },
   "scripts": {
@@ -27,5 +34,15 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint": "6.1.0",
+    "eslint-config-airbnb": "18.0.1",
+    "eslint-plugin-import": "2.18.2",
+    "eslint-plugin-jsx-a11y": "6.2.3",
+    "eslint-plugin-react": "7.14.3",
+    "eslint-plugin-react-hooks": "1.7.0",
+    "prettier-eslint": "^9.0.0",
+    "react-table": "^6.10.3"
   }
 }
