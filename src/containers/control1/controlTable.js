@@ -7,53 +7,24 @@ const response = {
     initial_data: [
         {
             "Run": 1,
-            "User Data 4": "x",
-            "User Data 5": "",
-            "Screen Capture": "No",
-            "Name": "Abcd",
-            // "types": [
-            //     {
-            //         "name": 'basketball',
-            //         "id": '1'
-            //     },
-            //     {
-            //         "name": 'soccer',
-            //         "id": '2'
+            "User": "x",
+            "Program": "FO0200    ",
+            "Timestamp": "6/15/2019  10:34:05 AM",
+            "Screen Capture Location": "c:/profile/screencaptures/FO0200D.FO020012.5.jpg",
 
-            //     }]
         }, {
-            "Run": 1,
-            "User Data 4": "x",
-            "User Data 5": "",
-            "Screen Capture": "Yes - 2",
-            "Name": "Abcd",
-            // "types": [
-            //     {
-            //         "name": 'basketball',
-            //         "id": '1'
-            //     },
-            //     {
-            //         "name": 'soccer',
-            //         "id": '2'
-
-            //     }]
+            "Run": 2,
+            "User": "x",
+            "Program": "FO0200    ",
+            "Timestamp": "6/15/2019  10:34:05 AM",
+            "Screen Capture Location": "c:/profile/screencaptures/FO0200D.FO020012.5.jpg",
         },
         {
             "Run": 11,
-            "User Data 4": "x",
-            "User Data 5": "",
-            "Screen Capture": "Yes",
-            "Name": "Axyz",
-            // "types": [
-            //     {
-            //         "name": 'basketball',
-            //         "id": '1'
-            //     },
-            //     {
-            //         "name": 'soccer',
-            //         "id": '2'
-
-            //     }]
+            "User": "xyz",
+            "Program": "FO0200    ",
+            "Timestamp": "6/15/2019  10:34:05 AM",
+            "Screen Capture Location": "c:/profile/screencaptures/FO0200D.FO020012.5.jpg",
         }]
 };
 
@@ -80,30 +51,34 @@ class ControlTable extends Component {
         const data = response.initial_data;
         const defaultExpandedRows = response.initial_data.map((element, index) => { return { index: true } });
         const columns = Object.keys(Object.assign({ "base": 1 }, response.initial_data[0])).map((key, id) => {
+
             if (key == "base")
                 return {
                     id: "checkbox",
                     accessor: "",
-                    Cell: (rowInfo) => {
+                    Cell: ({ original }) => {
                         return (
-                            <Checkbox
+                            <input
                                 type="checkbox"
                                 className="checkbox"
-                                checked={this.state.selected[rowInfo.original.title.props.children] === true}
-                                onChange={() => this.toggleRow(rowInfo.original.title.props.children)}
+                                checked={this.state.selected[original.Run] === true}
+                                onChange={() => this.toggleRow(original.Run)}
                             />
                         );
                     },
                     Header: " ",
                     sortable: false,
-                    width: 45
+                    width: 60
                 };
-            else
+            else {
+                let curWidth = data.reduce((prev, current) => (prev > current[key].length) ? prev : current[key].length);
+                console.log(curWidth);
                 return {
                     Header: key,
                     accessor: key,
-                    minWidth: 200
+                    minWidth: curWidth != undefined && curWidth > 20 ? 250 : 100
                 }
+            }
         });
 
         return <ReactTable
