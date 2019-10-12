@@ -59,18 +59,51 @@ const response = {
 
 class ControlTable extends Component {
     constructor(props) {
-        super(props) //since we are extending class Table so we have to use super in order to override Component class constructor
-
+        super(props);
+        this.state = {
+            selected: {},
+            selectAll: 0,
+            products: this.props.products
+        }
+        this.toggleRow = this.toggleRow.bind(this);
     }
+    toggleRow(title) {
+        const newSelected = Object.assign({}, this.state.selected);
+        newSelected[title] = !this.state.selected[title];
+        this.setState({
+            selected: newSelected,
+            selectAll: 2
+        });
+    }
+
     render() {
         const data = response.initial_data;
         const defaultExpandedRows = response.initial_data.map((element, index) => { return { index: true } });
-        const columns = Object.keys(response.initial_data[0]).map((key, id) => {
-            return {
-                Header: key,
-                accessor: key,
-                minWidth: 200
-            }
+        const columns = Object.keys(Object.assign({ "base": 1 }, response.initial_data[0])).map((key, id) => {
+            if (key == "base")
+                return {
+                    id: "checkbox",
+                    accessor: "",
+                    Cell: (rowInfo) => {
+                        return (
+                            <Checkbox
+                                type="checkbox"
+                                className="checkbox"
+                                checked={this.state.selected[rowInfo.original.title.props.children] === true}
+                                onChange={() => this.toggleRow(rowInfo.original.title.props.children)}
+                            />
+                        );
+                    },
+                    Header: " ",
+                    sortable: false,
+                    width: 45
+                };
+            else
+                return {
+                    Header: key,
+                    accessor: key,
+                    minWidth: 200
+                }
         });
 
         return <ReactTable
