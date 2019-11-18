@@ -4,19 +4,21 @@ import './scss/_header.scss'
 class Footer extends Component {
   render() {
     return (
-      <footer class="footr_area">
-        <div class="footer_widget_area">
-          <div class="container">
-            <div class="row footer_widget_inner">
-              <div class="col-lg-4 col-sm-6">
-                <aside class="f_widget f_about_widget">
-                  <img src="img/footer-logo.png" alt="" />
-                  <p>V_lagaci changing lives, V_lagaci changing lives, V_lagaci changing lives,V_lagaci changing lives,V_lagaci changing lives,V_lagaci changing lives,.</p>
+      <footer className="footr_area">
+        <div className="footer_widget_area">
+          <div className="container">
+            <div className="row footer_widget_inner">
+              {/* <div className="col-lg-4 col-sm-6"> */}
+                <aside className="f_widget f_about_widget">
+                  {/* <img src="img/footer-logo.png" alt="" /> */}
+                  <p>Want to replace your legacy application?  </p><br/>
+                    We can together build new world
+                 
                 </aside>
-              </div>
-              <div class="col-lg-4 col-sm-6">
-                {/* <aside class="f_widget f_insta_widget">
-                  <div class="f_title">
+              {/* </div> */}
+              <div className="col-lg-6 col-sm-6">
+                {/* <aside className="f_widget f_insta_widget">
+                  <div className="f_title">
                     <h3>Instagram</h3>
                   </div>
                   <ul>
@@ -31,25 +33,26 @@ class Footer extends Component {
                   </ul>
                 </aside> */}
               </div>
-              <div class="col-lg-4 col-sm-6">
+              <div className="col-lg-4 col-sm-6">
 
               </div>
             </div>
           </div>
         </div>
-        <div class="footer_copyright">
-          <div class="container">
-            <div class="float-sm-left">
-              Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved
+        <div className="footer_copyright">
+          <div className="container">
+            <div className="float-sm-left">vLegaci Corp.
+              {/* Copyright &copy; */}
+              {(new Date().getFullYear())} <i className="fa fa-copyright"></i>  All rights reserved
               </div>
-            <div class="float-sm-right">
+            <div className="float-sm-right">
               <ul>
-                <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-                <li><a href="#"><i class="fa fa-behance"></i></a></li>
-                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                <li><a href="#/"><i className="fa fa-pinterest"></i></a></li>
+                <li><a href="#/"><i className="fa fa-facebook"></i></a></li>
+                <li><a href="#/"><i className="fa fa-twitter"></i></a></li>
+                <li><a href="#/"><i className="fa fa-dribbble"></i></a></li>
+                <li><a href="#/"><i className="fa fa-behance"></i></a></li>
+                <li><a href="#/"><i className="fa fa-linkedin"></i></a></li>
               </ul>
             </div>
           </div>

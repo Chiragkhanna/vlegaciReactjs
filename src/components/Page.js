@@ -9,7 +9,7 @@ class Page extends React.Component {
      * our component is mounted to the DOM, which is exactly what we want in this case
      */
     componentDidMount() {
-        document.title = this.props.title
+        //document.title = this.props.title
     }
 
     /**

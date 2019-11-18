@@ -1,9 +1,13 @@
+@media (max-width:3000px){.container{max-width:2700px;padding: 0px 150px ;}}
+@media (max-width:2500px){.container{max-width:2300px;padding: 0px 100px ;}}
+@media (max-width:2000px){.container{max-width:1800px;padding: 0px 50px ;}}
 @media (max-width: 1750px){
     .best_3d_area .left_3d::before {
         background-size: contain;
         width: 100%;
     }
 }
+
 @media (max-width: 1520px){
     .shap_mobile {
         padding-left: 80px;

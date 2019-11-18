@@ -354,7 +354,7 @@ i:before {
 }
 
 .banner_inner_text h2 {
-  font-size: 72px;
+  font-size: 48px;
   color: #0b1033;
   font-family: "Roboto", sans-serif;
   font-weight: normal;
@@ -551,7 +551,7 @@ i:before {
 /* Feature Area css
 ============================================================================================ */
 .feature_area {
-  padding-top: 70px;
+  padding-top: 50px;
 }
 
 .feature_item {
@@ -2171,7 +2171,7 @@ i:before {
 .footer_widget_area {
   background: url(../img/footer-bg.jpg) no-repeat scroll center center;
   background-size: cover;
-  padding: 130px 0px 115px 0px;
+  padding: 90px 0px 75px 0px;
 }
 
 .f_title {
@@ -2187,6 +2187,7 @@ i:before {
 
 .f_about_widget {
   padding-right: 35px;
+  font-size: 24 px;
 }
 
 .f_about_widget img {
@@ -2194,7 +2195,7 @@ i:before {
 }
 
 .f_about_widget p {
-  font-size: 15px;
+  font-size: 24px;
   line-height: 28px;
   color: #fff;
   font-family: "Roboto", sans-serif;
@@ -2284,6 +2285,7 @@ i:before {
   overflow: hidden;
   background: #11173b;
   padding: 35px 0px;
+  color: white;
 }
 
 .footer_copyright .float-sm-left h5 {
@@ -2328,7 +2330,7 @@ i:before {
 .runTable{
   min-width: 380px;
     overflow: auto;
-    height:400px    
+   max-height:400px;
 }
 
 .section_header{
@@ -2343,3 +2345,67 @@ i:before {
 .ReactTable .rt-tbody{
   overflow: initial !important;
   }
+  .rt-thead {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: white;
+    font-weight: bolder;
+  }
+
+  .sticky {
+    position: sticky !important;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    background-color: white;
+  }
+
+  .TDSRCDATA {
+    background-color:rgb(136, 199, 231);
+    font-family: "Courier";
+  }
+  .databaseSubSectionDivider{
+    background-color:rgb(84, 130, 53);
+    height: 20px;
+  }
+  .databaseSubSectionHeading{
+    color:rgb(0, 112, 192);
+  }
+  .displayNothing {
+    display: none;
+  }
+
+  .imagecellOverflow{
+    max-height: 370px;
+     overflow: auto;
+  }
+  .rt-tr[data-qnt="0"] > .rt-expandable {
+    visibility: hidden;
+}
+.display-block {
+  display: block;
+}
+
+.display-none {
+  display: none;
+}
+.modal-dialog-centered {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  min-height: calc(100% - (0.5rem * 2));
+}
+
+.modal-dialog-centered::before {
+  display: block;
+  height: calc(100vh - (0.5rem * 2));
+  content: "";
+}
+.p_50 {
+  padding: 50px 0px;
+}
+.noteHighlight{
+  color:lightgreen;
+}

@@ -1,5 +1,16 @@
 import React from "react"
 import Table from "./table";
+import Dbtable from "./dbtable";
+import ImageTable from "./imagetable";
+import { updateRunDataInStore } from "../containers/run/action";
+import { updateNote } from "../containers/notes/actions";
+import { connect } from 'react-redux'
+
+const groupBy = (items, key) => items.reduce(
+    (result, item) =>
+        Object.assign(result, { [item[key]]: (result[item[key]] || []).concat(item) }),
+    {},
+);
 
 class Section extends React.Component {
     constructor(props) {
@@ -12,34 +23,89 @@ class Section extends React.Component {
     togglePanel(e) {
         this.setState({ open: !this.state.open })
     }
+
     /**
      * Here, we define a react lifecycle method that gets executed each time 
      * our component is mounted to the DOM, which is exactly what we want in this case
      */
     componentDidMount() {
-        document.title = this.props.title
+
     }
 
     render() {
         const sectionTitle = this.props.sectionTitle
+        let sectionData;
+        if (this.props.sectionTitle === "DatabaseOutput") {
+            let subTypeData = groupBy(this.props.sectionData, 'SubType');
+            let renderSubSection = [];
+            for (var prop in subTypeData) {
+                if (Object.prototype.hasOwnProperty.call(subTypeData, prop)) {
+                    renderSubSection.push(<div key={"ct_" + prop}> <div className="databaseSubSectionDivider" >  </div> <h6 className="databaseSubSectionHeading">{prop}</h6> <div className="controlTable"><Dbtable data={subTypeData[prop]} /> </div> <br /></div>);
+                }
+            }
+            sectionData =
+                <div className="card">
+                    <div onClick={(e) => this.togglePanel(e)} className='card-header'>
+                        {this.state.open ? (
+                            <i className="fa fa-fw fa-chevron-down"></i>
+                        ) : <i className="fa fa-fw fa-chevron-right"></i>}
+                        {sectionTitle}</div>
+                    {this.state.open ? (
 
-        return (
-            <div class="card">
+                        renderSubSection.map((t, i) => <div key={"subSection_" + i}>  {t}</div>)
+
+                    ) : null}
+                </div>;
+        }
+        else if (this.props.sectionTitle === "ScreenCapture") {
+            sectionData = <div className="card">
                 <div onClick={(e) => this.togglePanel(e)} className='card-header'>
                     {this.state.open ? (
-                        <i class="fa fa-fw fa-chevron-down"></i>
-                    ) : <i class="fa fa-fw fa-chevron-right"></i>}
+                        <i className="fa fa-fw fa-chevron-down"></i>
+                    ) : <i className="fa fa-fw fa-chevron-right"></i>}
                     {sectionTitle}</div>
                 {this.state.open ? (
-                    <div class="controlTable">
-                        <Table data={this.props.sectionData} />
+                    <div className="controlTable">
+                        <ImageTable data={this.props.sectionData} />
                     </div>
                 ) : null}
-                {/* <h3>{sectionTitle}</h3> */}
 
             </div>
+        }
+        else {
+            sectionData = <div className="card">
+                <div onClick={(e) => this.togglePanel(e)} className='card-header'>
+                    {this.state.open ? (
+                        <i className="fa fa-fw fa-chevron-down"></i>
+                    ) : <i className="fa fa-fw fa-chevron-right"></i>}
+                    {sectionTitle}</div>
+                {this.state.open ? (
+                    <div className="controlTable">
+                        <Table data={this.props.sectionData} sectionName={this.props.sectionTitle} updateTableData={this.props.updateRunDataInStore} />
+                    </div>
+                ) : null}
+
+
+            </div>
+        }
+        return (
+            <div className="card"> {sectionData} </div>
         )
     }
 }
 
-export default Section
+
+// const mapDispatchToProps = dispatch => {
+//     return {
+//         // dispatching actions returned by action creators
+//         updateRunDataInStore: (e, val) => dispatch(updateRunDataInStore(val))
+//     }
+// }
+const mapDispatchToProps = dispatch => ({
+    updateRunDataInStore: (e, val) => {
+        dispatch(updateRunDataInStore(val));
+        dispatch(updateNote(val));
+    },
+});
+
+export default connect(null, mapDispatchToProps)(Section);
