@@ -21,8 +21,8 @@ class Step extends React.Component {
 
         //if (!this.props.runSectionList || !(this.props.runSectionList.length > 0)) {
         if (this.props.selectedRunId > 0 && this.props.isRunIdChange) {
-            //this.props.fetchData(RUN_DATA_API_URL + "/" + this.props.selectedRunId);
-            this.props.fetchData(RUN_DATA_API_URL);
+            this.props.fetchData(RUN_DATA_API_URL + "/" + this.props.selectedRunId);
+            //this.props.fetchData(RUN_DATA_API_URL);
         }
 
         // }
