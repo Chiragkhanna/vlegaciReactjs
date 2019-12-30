@@ -2,6 +2,7 @@ import React from "react"
 import Table from "./table";
 import Dbtable from "./dbtable";
 import ImageTable from "./imagetable";
+import ErrorBoundary from "./errorboundary";
 import { updateRunDataInStore } from "../containers/run/action";
 import { updateNote } from "../containers/notes/actions";
 import { connect } from 'react-redux'
@@ -36,11 +37,12 @@ class Section extends React.Component {
         const sectionTitle = this.props.sectionTitle
         let sectionData;
         if (this.props.sectionTitle === "DatabaseOutput") {
-            let subTypeData = groupBy(this.props.sectionData, 'SubType');
+
+            let subTypeData = groupBy(this.props.sectionData, 'JOOBJ');
             let renderSubSection = [];
             for (var prop in subTypeData) {
                 if (Object.prototype.hasOwnProperty.call(subTypeData, prop)) {
-                    renderSubSection.push(<div key={"ct_" + prop}> <div className="databaseSubSectionDivider" >  </div> <h6 className="databaseSubSectionHeading">{prop}</h6> <div className="controlTable"><Dbtable data={subTypeData[prop]} /> </div> <br /></div>);
+                    renderSubSection.push(<div key={"ct_" + prop}> <div className="databaseSubSectionDivider" >  </div> <h6 className="databaseSubSectionHeading">{prop}</h6> <div className="controlTable"><ErrorBoundary><Dbtable data={subTypeData[prop]} /></ErrorBoundary> </div> <br /></div>);
                 }
             }
             sectionData =
@@ -52,7 +54,8 @@ class Section extends React.Component {
                         {sectionTitle}</div>
                     {this.state.open ? (
 
-                        renderSubSection.map((t, i) => <div key={"subSection_" + i}>  {t}</div>)
+                        renderSubSection.map((t, i) => <ErrorBoundary key={"subSectionError_" + i}>
+                            <div key={"subSection_" + i}>  {t}</div> </ErrorBoundary>)
 
                     ) : null}
                 </div>;
@@ -65,9 +68,11 @@ class Section extends React.Component {
                     ) : <i className="fa fa-fw fa-chevron-right"></i>}
                     {sectionTitle}</div>
                 {this.state.open ? (
-                    <div className="controlTable">
-                        <ImageTable data={this.props.sectionData} />
-                    </div>
+                    <ErrorBoundary>
+                        <div className="controlTable">
+                            <ImageTable data={this.props.sectionData} />
+                        </div>
+                    </ErrorBoundary>
                 ) : null}
 
             </div>
@@ -80,9 +85,11 @@ class Section extends React.Component {
                     ) : <i className="fa fa-fw fa-chevron-right"></i>}
                     {sectionTitle}</div>
                 {this.state.open ? (
-                    <div className="controlTable">
-                        <Table data={this.props.sectionData} sectionName={this.props.sectionTitle} updateTableData={this.props.updateRunDataInStore} />
-                    </div>
+                    <ErrorBoundary>
+                        <div className="controlTable">
+                            <Table data={this.props.sectionData} sectionName={this.props.sectionTitle} updateTableData={this.props.updateRunDataInStore} />
+                        </div>
+                    </ErrorBoundary>
                 ) : null}
 
 

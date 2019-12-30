@@ -58,15 +58,14 @@ class Dbtable extends Component {
                     data[i]["ColorForCell"] = data[i]["ColorForCell"] + "," + key;
                     data[i + 1]["ColorForCell"] = data[i + 1]["ColorForCell"] + "," + key;
                 }
-
             }
-
         }
         //iterate the array and fill new property named ColorForCell
         // If the value is UB, starting with cell AB on that row,
         //go through each cell to the end, and compare UBrow to UBrow+1 - if the values are different color them blue
         const columns = Object.keys(data[0]).map((key, index) => {
-            let curWidth = data.reduce((prev, current) => (prev > current[key].length) ? prev : current[key].length);
+            //let curWidth = data.reduce((prev, current) => (prev > current[key].length) ? prev : current[key].length);
+            let curWidth = data.reduce((prev, current) => (current[key] == undefined ? 100 : ((prev > current[key].length) ? prev : current[key].length)));
             if (key === "ColorForCell") {
                 return {
                     Header: key,
@@ -108,6 +107,18 @@ class Dbtable extends Component {
                                         }
                                     }
                                 case 'UB':
+                                    if (rowInfo && rowInfo.row && rowInfo.row.ColorForCell && rowInfo.row.ColorForCell.includes(key)) {
+                                        return {
+                                            style: {
+                                                background: "RGB(217, 225, 242)"
+                                            }
+                                        }
+                                    } else return {
+                                        style: {
+                                            background: null
+                                        }
+                                    }
+                                case 'UP':
                                     if (rowInfo && rowInfo.row && rowInfo.row.ColorForCell && rowInfo.row.ColorForCell.includes(key)) {
                                         return {
                                             style: {
