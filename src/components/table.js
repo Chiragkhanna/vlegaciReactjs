@@ -60,12 +60,22 @@ class Table extends Component {
             show: !this.state.show
         });
     };
-
-    onUpdateTableData = (e, param) => {
+    onCloseTableData = (e, param) => {
         this.setState({
             show: !this.state.show
         });
+    };
+    onUpdateTableData = (e, param) => {
+        // this.setState({
+        //     show: !this.state.show
+        // });
         this.props.updateTableData && this.props.updateTableData(e, param);
+    };
+    onAddTableData = (e, param) => {
+        this.props.addTableData && this.props.addTableData(e, param);
+    };
+    onDeleteTableData = (e, param) => {
+        this.props.deleteTableData && this.props.deleteTableData(e, param);
     };
     handleButtonClick = (e, row) => {
         this.setState({ visible: true });
@@ -74,6 +84,7 @@ class Table extends Component {
     render() {
 
         const data = this.props.data;
+        console.log(data[0]);
         const columns = Object.keys(data[0]).map((key, id) => {
             let curWidth = data.reduce((prev, current) => (prev > current[key].length) ? prev : current[key].length);
             if (key === "note") {
@@ -115,7 +126,7 @@ class Table extends Component {
                     // }
                 }
         });
-        return (<span><ReactTable
+        let renderComp = <span><ReactTable
             data={data}
             columns={columns}
             showPagination={false}
@@ -143,11 +154,50 @@ class Table extends Component {
                 }
             }}
         />
-            <BasicModal onClose={this.showModal} onSave={this.onUpdateTableData} show={this.state.show}
-                sectionName={this.props.sectionName} data={this.state.selectedRow} >
+
+            <BasicModal onClose={this.showModal} onSave={this.onUpdateTableData} onDelete={this.onDeleteTableData} onAdd={this.onAddTableData} onClose={this.onCloseTableData}
+                show={this.state.show} sectionName={this.props.sectionName} data={this.state.selectedRow} >
                 Message in Modal
-            </BasicModal>
+        </BasicModal>
+
         </span>
+        if (!this.state.show)
+            renderComp = <span><ReactTable
+                data={data}
+                columns={columns}
+                showPagination={false}
+                minRows={1}
+                manual
+                className="-striped -highlight runTable"
+                getTrProps={(state, rowInfo) => {
+                    if (rowInfo && rowInfo.row) {
+                        return {
+                            onClick: (e) => {
+                                this.setState({
+                                    selected: rowInfo.index,
+                                    selectedRow: rowInfo.original
+                                });
+                                this.setState({ show: true });
+                                this.handleButtonClick(e, rowInfo);
+                            },
+                            style: {
+                                background: rowInfo.index === this.state.selected ? '#00afec' : 'white',
+                                color: rowInfo.index === this.state.selected ? 'red' : 'black'
+                            }
+                        }
+                    } else {
+                        return {}
+                    }
+                }}
+            />
+
+                <BasicModal onClose={this.showModal} onSave={this.onUpdateTableData} onDelete={this.onDeleteTableData} onAdd={this.onAddTableData} onClose={this.onCloseTableData}
+                    show={this.state.show} sectionName={this.props.sectionName} data={this.state.selectedRow} >
+                    Message in Modal
+            </BasicModal>
+
+            </span>
+        return (renderComp
         );
     }
 }

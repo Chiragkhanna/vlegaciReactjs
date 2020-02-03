@@ -7,6 +7,13 @@ export function updateNote(value) {
         data: value
     }
 };
+export function deleteNote(value) {
+    return {
+        type: types.DELETE_NOTES,
+        data: value
+    }
+};
+
 export function requestNotesJson(updateNoteURL) {
     return {
         type: types.REQUEST_NOTES

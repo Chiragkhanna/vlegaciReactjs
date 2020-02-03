@@ -41,6 +41,19 @@ const runReducer = (state = initialState, action) => {
                 error: action.error
             }
         case 'UPDATE_RUN_DATA':
+            console.log(action.data);
+            let runRes = state.runSectionList.map(obj => {
+                let tempNoteData = action.data.filter(x => x.trcseq == obj.RLSEQ);
+                return {
+                    ...obj,
+                    note: tempNoteData.length > 0 ? JSON.stringify(tempNoteData[0].notes) : obj.note
+                }
+            });
+            return {
+
+                ...state, runSectionList: runRes
+            }
+        case 'UPDATE_NOTES_IN_RUN_DATA':
 
             return {
                 ...state, runSectionList: state.runSectionList.map((post) => {

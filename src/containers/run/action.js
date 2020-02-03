@@ -8,3 +8,4 @@ export function runSectionFetchDataSuccess(items) {
 }
 
 export const updateRunDataInStore = (value) => ({ type: 'UPDATE_RUN_DATA', data: value })
+export const updateNotesInRunDataStore = (value) => ({ type: 'UPDATE_NOTES_IN_RUN_DATA', data: value })

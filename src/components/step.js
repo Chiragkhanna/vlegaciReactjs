@@ -21,7 +21,7 @@ class Step extends React.Component {
 
         //if (!this.props.runSectionList || !(this.props.runSectionList.length > 0)) {
         if (this.props.selectedRunId > 0 && this.props.isRunIdChange) {
-            this.props.fetchData(RUN_DATA_API_URL + "/" + this.props.selectedRunId);
+            this.props.fetchData(RUN_DATA_API_URL + "/" + this.props.selectedRunId, this.props.selectedRunId);
             //this.props.fetchData(RUN_DATA_API_URL);
         }
 
@@ -37,7 +37,7 @@ class Step extends React.Component {
         for (var prop in stepGroupData) {
             if (Object.prototype.hasOwnProperty.call(stepGroupData, prop)) {
                 let newArrayWithoutTypeProp = stepGroupData[prop].map(({ Type, ...keepAttrs }) => keepAttrs)
-                renderStep.push(<div key={"sectionDiv_" + prop}>  <Section key={"section_" + prop} sectionTitle={prop} sectionData={newArrayWithoutTypeProp} /> <br /></div>);
+                renderStep.push(<div key={"sectionDiv_" + prop}>  <Section key={"section_" + prop} currentRunId={this.props.selectedRunId} sectionTitle={prop} sectionData={newArrayWithoutTypeProp} /> <br /></div>);
             }
         }
         return renderStep;

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ReactTable from 'react-table'
+import BasicModal from './modals/basicmodal'
 import 'react-table/react-table.css'
 /* eslint-disable react/forbid-foreign-prop-types */
 // @ts-ignore
@@ -43,22 +44,59 @@ delete ReactTable.propTypes.ResizerComponent;
 delete ReactTable.propTypes.PadRowComponent;
 /* eslint-enable react/forbid-foreign-prop-types */
 
-class ImageTable extends Component {
+class SimpleTable extends Component {
+    constructor(props) {
+        super(props);
 
+        this.state = {
+            selected: [],
+            row: [],
+            show: false,
+            selectedRow: {}
+        }
+    }
+
+    handleButtonClick = (e, row) => {
+        this.setState({ visible: true });
+        this.setState({ show: true });
+    };
     render() {
-        const data = this.props.data.map(x => x.Capture);
+
+        const data = this.props.data;
+        console.log(data[0]);
         const columns = Object.keys(data[0]).map((key, id) => {
             let curWidth = data.reduce((prev, current) => (prev > current[key].length) ? prev : current[key].length);
-            return {
-                Header: "",
-                accessor: key,
-                minWidth: curWidth !== undefined && curWidth > 20 ? curWidth * 14 : 100,
-                className: "sticky",
-                headerClassName: "sticky",
-                Cell: props => key === 'Capture' ? <div className="imagecellOverflow"><img src={props.original.Capture} alt="" /></div> : <span>{"N/A"}</span>
+            if (key === "notes") {
+                return {
+                    Header: key,
+                    id: key,
+
+                    accessor: data => {
+                        let output = [];
+                        data.notes.map(book => {
+                            output.push(book.note);
+                        });
+                        return output.join(', ');
+                    },
+                    minWidth: curWidth !== undefined && curWidth > 20 ? curWidth * 12 : 100,
+                    className: "sticky",
+                    headerClassName: "sticky",
+
+                };
             }
+            else
+                return {
+                    Header: key,
+                    accessor: key,
+                    //minWidth: curWidth !== undefined && curWidth > 50 ? curWidth * 2.5 : 100,
+                    minWidth: curWidth !== undefined && curWidth > 20 ? curWidth * 12 : 100,
+                    className: "sticky",
+                    headerClassName: "sticky",
+
+
+                }
         });
-        return <ReactTable
+        let renderComp = <span><ReactTable
             data={data}
             columns={columns}
             showPagination={false}
@@ -67,7 +105,12 @@ class ImageTable extends Component {
             className="-striped -highlight runTable"
 
         />
+
+
+        </span>
+        return (renderComp
+        );
     }
 }
 
-export default ImageTable;
+export default SimpleTable;

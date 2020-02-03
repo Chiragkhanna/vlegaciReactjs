@@ -3,9 +3,10 @@ import Table from "./table";
 import Dbtable from "./dbtable";
 import ImageTable from "./imagetable";
 import ErrorBoundary from "./errorboundary";
-import { updateRunDataInStore } from "../containers/run/action";
-import { updateNote } from "../containers/notes/actions";
+import { updateNoteJson, deleteNoteJson, addNoteJson } from "../containers/notes/operations";
+import { updateNote, deleteNote, addNote } from "../containers/notes/actions";
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux';
 
 const groupBy = (items, key) => items.reduce(
     (result, item) =>
@@ -87,7 +88,8 @@ class Section extends React.Component {
                 {this.state.open ? (
                     <ErrorBoundary>
                         <div className="controlTable">
-                            <Table data={this.props.sectionData} sectionName={this.props.sectionTitle} updateTableData={this.props.updateRunDataInStore} />
+                            <Table data={this.props.sectionData} sectionName={this.props.sectionTitle} updateTableData={this.props.updateNoteDataInStore}
+                                addTableData={this.props.addNoteDataInStore} deleteTableData={this.props.deleteNoteDataInStore} />
                         </div>
                     </ErrorBoundary>
                 ) : null}
@@ -108,11 +110,24 @@ class Section extends React.Component {
 //         updateRunDataInStore: (e, val) => dispatch(updateRunDataInStore(val))
 //     }
 // }
-const mapDispatchToProps = dispatch => ({
-    updateRunDataInStore: (e, val) => {
-        dispatch(updateRunDataInStore(val));
-        dispatch(updateNote(val));
-    },
-});
+// const mapDispatchToProps = dispatch => ({
+//     updateRunDataInStore: (e, val) => {
+//         dispatch(updateRunDataInStore(val));
+//         dispatch(updateNote(val));
+//     },
+//     deleteNoteDataInStore: (e, val) => {
+//         dispatch(updateRunDataInStore(val));
+//         dispatch(deleteNote(val));
+//     },
+//     addNoteDataInStore: (e, val) => {
+//         dispatch(updateRunDataInStore(val));
+//         dispatch(updateNote(val));
+//     },
+// });
+const mapDispatchToProps = dispatch => bindActionCreators({
+    updateNoteDataInStore: updateNoteJson,
+    deleteNoteDataInStore: deleteNoteJson,
+    addNoteDataInStore: addNoteJson
+}, dispatch)
 
 export default connect(null, mapDispatchToProps)(Section);

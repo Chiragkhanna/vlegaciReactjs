@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import { fetchNoteJson } from './operations';
 import { NOTES_DATA_API_URL } from '../../config/config';
-import Table from '../../components/table';
+import SimpleTable from '../../components/simpleTable';
 
 class Note extends React.Component {
     constructor(props) {
@@ -23,13 +23,16 @@ class Note extends React.Component {
      */
     componentDidMount() {
         if (this.props.notesData.length === 0) {
-            this.props.fetchData(NOTES_DATA_API_URL);
+            this.props.fetchData(NOTES_DATA_API_URL + "/" + this.props.selectedRunId);
         }
     }
 
     render() {
         if (this.props.pending || this.props.notesData.length === 0) {
             return <div className="col">Loading... {this.props.pending}</div>;
+        }
+        if (this.props.selectedRunId == null) {
+            return <div className="col">Please go back to Program Execution Analysis and Documentation and select Run against which data need to be fetch...</div>;
         }
         return (
             <div className="container">
@@ -43,7 +46,7 @@ class Note extends React.Component {
                             {"Notes"}</div>
                         {this.state.open ? (
                             <div className="controlTable">
-                                <Table data={this.props.notesData} sectionName={"Notes"} />
+                                <SimpleTable data={this.props.notesData} sectionName={"Notes"} />
                             </div>
                         ) : null}
 
@@ -56,6 +59,7 @@ const mapStateToProps = (state) => {
     return {
         notesData: state.noteReducer.notesData,
         pending: state.noteReducer.showSpinner,
+        selectedRunId: state.controlReducer.selectedRunId,
     };
 };
 
