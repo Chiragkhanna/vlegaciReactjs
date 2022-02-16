@@ -4,17 +4,245 @@ metadata:
   name: people-graphql
   description: People GraphQL Schema
   links:
-    - url: https://github.com/graphql/people-graphql
+    - url: https://git-macoe.bcg.com/SMP-Applications/people-api
       title: GitHub Repo
       icon: github
 spec:
   type: graphql
   lifecycle: production
-  owner: team-b
+  owner: Vijay Malhan
   definition: |
     schema {
       query: Root
     }
+     type Root {
+      """
+      Navigate person graph via this query, you will use this if you have access to person's ID 
+      otherwise use search query. Returns a person data.
+      """
+      employee(
+        "Person's ID"
+        id: String
+        "Search field"
+        field: String = "HRID"
+        "Data set type from which person data is to be accessed."
+        dataSet: DataSet = BCG_IT
+      ): Employee
+
+      """
+      Navigate people graph via this query, you will use this if you have access to person's ID 
+      otherwise use search query. Returns multiple people data for the list of ids provided.
+      """
+      employees(
+        "Person's ID"
+        ids: [String]
+        "Data set type from which person data is to be accessed."
+        dataSet: DataSet = BCG_IT
+      ): [Employee!]
+    }
+    
+    enum DataSet {
+      BCG_ALL
+      BCG_ALUMINI
+      BCG_IT
+      BCG_REGULAR
+      BCG_VENDORS
+    }
+
+    """
+    Employee Type - the main data structure used by the People API graph.
+    In a logical People graph, each node is an instance of this type.
+    """
+    type Employee {
+      "Person's unique ID"
+      id: String
+
+      "Person's name in the format 'Surname, Firstname' (V1)"
+      name: String @deprecated(reason: "Use preferredName(V2) instead")
+
+      "Person's name in the format 'Surname, Firstname' (V2)"
+      preferredName: String
+
+      "Person's display name in the format 'Surname, Firstname' (V1)"
+      displayName: String
+        @deprecated(reason: "Use preferredDisplayName(V2) instead")
+
+      "Person's display name in the format 'Surname, Firstname' (V2)"
+      preferredDisplayName: String
+
+      "Person's first name (V1)"
+      firstName: String @deprecated(reason: "Use preferredFirstName(V2) instead")
+
+      "Person's first name (V2)"
+      preferredFirstName: String
+
+      "Person's maiden name"
+      maidenName: String
+
+      "Person's last name (V1)"
+      lastName: String @deprecated(reason: "Use preferredLastName(V2) instead")
+
+      "Person's last name (V2)"
+      preferredLastName: String
+
+      "Person's Slack alias"
+      slackId: String
+
+      "Person's Business title (V1)"
+      title: String @deprecated(reason: "Use businessTitle(V2) instead")
+
+      "Person's Business title (V2)"
+      businessTitle: String
+
+      "Person's cohort"
+      cohort: String
+
+      "Person's Track (V1)"
+      track: String @deprecated(reason: "Use jobCategory(V2) instead.")
+
+      "Person's Job Category (V2)"
+      jobCategory: String
+
+      "Profile Summary for Employee"
+      profileSummary: String
+
+      "Person's status Active/Inactive/LOA"
+      status: String
+
+      "Person's job function"
+      jobFunction: String
+
+      "Person's job position"
+      jobPosition: String
+
+      "Person's global title"
+      globalTitle: String
+
+      "Person's official email (V1)"
+      email: String @deprecated(reason: "Use workEmail(V2) instead.")
+
+      "Person's official email (V2)"
+      workEmail: String
+
+      "Person's official desk phone (V1)"
+      phone: String @deprecated(reason: "Use workPhone(V2) instead.")
+
+      "Person's official desk phone (V2)"
+      workPhone: String
+
+      "Person's official mobile phone (V1)"
+      mobile: String @deprecated(reason: "Use primaryWorkMobile(V2) instead.")
+
+      "Person's official mobile phone (V2)"
+      primaryWorkMobile: String
+
+      "Person's nationality"
+      nationality: String @deprecated(reason: "Use nationalities instead.")
+
+      "Person's nationality"
+      nationalities: [String!]
+
+      "Person's hire date (V1)"
+      hireDate: String @deprecated(reason: "Use latestHireDate(V2) instead.")
+
+      "Person's hire date (V2)"
+      latestHireDate: String
+
+      "Person's host office code"
+      hostOfficeId: String
+
+      "Person's host office region"
+      hostOfficeRegion: String
+
+      "Person's home office code"
+      homeOfficeId: String
+
+      "Person's home office region"
+      homeOfficeRegion: String
+
+      
+      "Person's profile pic in jpeg format"
+      picture: String
+
+      "Person's profile picture in png format"
+      profilePicture: String
+
+      "Line Manager's ID"
+      lineManagerId: String
+
+      "Line Manager, returned as an person object."
+      lineManager: Employee
+
+      "Reporting line of the person. Returned as an array of person objects"
+      reportingLine: [Employee!]
+
+      "Timestamp when People API updated itself with the snowflake"
+      lastUpdated: String
+
+      
+      "Practice area the person belongs to"
+      practiceArea: String
+
+      "Person's responsibility center ID"
+      responsibilityCenterId: String
+        @deprecated(reason: "Use responsibilityCenters.id")
+
+      "Person's responsibility center name"
+      responsibilityCenterName: String
+        @deprecated(reason: "Use responsibilityCenters.name")
+
+      "Person's responsibility percentage"
+      responsibilityPercentage: String
+        @deprecated(reason: "Use responsibilityCenters.percentage")
+
+      "Person's responsibility group name"
+      responsibilityGroupName: String
+        @deprecated(reason: "Use responsibilityCenters.groupName")
+
+      "Staff ID of a person"
+      staffId: String
+
+      "IDs of assistant of current person"
+      assistantIds: [String!]
+
+      "Details of Person's assistants"
+      assistants: [Employee!]
+
+      "Details of People being assisted by this employee"
+      assists: [Employee!]
+
+      "Indicates if this person is an alumni"
+      alumni: String
+
+      "Person's pronoun"
+      pronouns: String
+
+    }
+
+    """
+    List of people for search result with total number of people actually exists for search query provided
+    """
+    type Employees {
+      "List of people objects"
+      employees: [Employee!]
+      "The total number of matching people for the search query exists in data base, regardless of limit provided"
+      totalCount: Int
+      "Search result filter by key"
+      searchFilters: [SearchResultFilter!]
+    }
+    type SearchResultFilter {
+      "Filter field"
+      field: String
+      "Filters for the aggregated field"
+      filters: [ResultFilter!]
+    }
+    type ResultFilter {
+      "Filter field key"
+      key: String
+      "Number of instances"
+      count: String
+    }
+
     """A single film."""
     type Film implements Node {
       """The title of this film."""
